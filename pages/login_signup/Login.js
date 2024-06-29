@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-nativ
 import { StatusBar } from 'expo-status-bar';
 import { Shadow } from 'react-native-shadow-2';
 
-const Login = () => {
+const Login = ({ navigation }) => {
   const [username, setUsername] = useState('')
   return (
     <View style={styles.container}>
@@ -36,7 +36,7 @@ const Login = () => {
               backgroundColor: '#4caf50',
               margin: 6,
             }} 
-            onPress={() => navigation.navigate('Login')}
+            onPress={() => navigation.navigate('Explore Fashion')}
           >
             <Text style={{ color: 'white', fontSize: 12, fontFamily: 'OpenSans-Regular' }}>Login</Text>
           </TouchableOpacity>
