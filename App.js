@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LandingPage from './pages/LandingPage';
 import Login from './pages/login_signup/Login';
 import ExploreFashion from './pages/explore/ExploreFashion';
+import Camera from './pages/utils/Camera';
 import useFonts from './pages/utils/useFonts';
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -49,6 +50,7 @@ export default function App() {
         <Stack.Screen name='Landing Page' options={{ headerShown: false }} component={LandingPage} />
         <Stack.Screen name='Login' options={{ headerShown: false }} component={Login} />
         <Stack.Screen name='Explore Fashion' options={{ headerShown: false }} component={ExploreFashion} />
+        <Stack.Screen name='Camera' options={{ headerShown: false }} component={Camera} />
       </Stack.Navigator>
     </NavigationContainer>
   );

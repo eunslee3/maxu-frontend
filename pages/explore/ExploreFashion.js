@@ -1,50 +1,8 @@
-import React, { useState } from 'react';
-import { CameraView, useCameraPermissions } from 'expo-camera';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 
-const ExploreFashion = () => {
-  const [facing, setFacing] = useState('back');
-  const [permission, requestPermission] = useCameraPermissions();
-
-  const toggleCameraFacing = () => {
-    setFacing(current => (current === 'back' ? 'front' : 'back'));
-  }
-
-  if (permission.granted) {
-    <View style={{ flex: 1, justifyContent: 'center' }}>
-      <CameraView>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            backgroundColor: 'transparent',
-            margin: 64
-          }}
-        >
-          <TouchableOpacity 
-            style={{
-              flex: 1,
-              alignSelf: 'flex-end',
-              alignItems: 'center'
-            }}
-          >
-            <Text 
-              style={{
-                fontSize: 24,
-                fontWeight: 'bold',
-                color: 'white'
-              }}
-            >
-              Flip Camera
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </CameraView>
-    </View>
-  }
-
-  console.log(permission)
+const ExploreFashion = ({ navigation }) => {
 
   return (
     <View styles={styles.container} >
@@ -53,7 +11,7 @@ const ExploreFashion = () => {
         <Text style={styles.text} >Take a photo or upload an image of yourself to get started!</Text>
         <TouchableOpacity 
           style={styles.button} 
-          onPress={requestPermission}
+          onPress={() => navigation.navigate('Camera')}
           title='grant permission'
         >
           <Text style={{ color: 'white', fontSize: 16 }}>Take a Photo</Text>
