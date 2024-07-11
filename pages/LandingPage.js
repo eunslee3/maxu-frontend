@@ -1,8 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-// import landingPageImage from '../assets/landing_page_image.png';
-import MultiUseButton from './components/MultiUseButton';
 
 const LandingPage = ({ navigation }) => {
   return (

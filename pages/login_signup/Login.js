@@ -3,11 +3,29 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-nativ
 import { StatusBar } from 'expo-status-bar';
 import { Shadow } from 'react-native-shadow-2';
 
+import AntDesign from '@expo/vector-icons/AntDesign';
+
 const Login = ({ navigation }) => {
   const [username, setUsername] = useState('')
+
   return (
     <View style={styles.container}>
       {/* Shadow is not abiding well with the layout... */}
+      <View 
+        style={{
+          flex: 0.3,
+          alignItems: 'flex-start',
+          width: '100%',
+        }}
+      >
+        <AntDesign
+          name="back" 
+          size={28} 
+          color="black"
+          style={{ marginLeft: 20 }}
+          onPress={() => navigation.navigate('Landing Page')}
+        />
+      </View>
       <Shadow style={styles.login}>
         <View label='textContainer' style={styles.textContainer}>
           <Text label='header' style={styles.header}>Welcome!</Text>
@@ -46,6 +64,8 @@ const Login = ({ navigation }) => {
           </View>
         </View>
       </Shadow>
+      {/* I can use this view for SSO later down the road */}
+      <View style={{ flex: 0.3 }} />
     </View>
   )
 }

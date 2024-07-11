@@ -1,11 +1,19 @@
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useState, useEffect, useRef } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
+import * as ImageManipulator from 'expo-image-manipulator';
+
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import Ionicons from '@expo/vector-icons/Ionicons';
+
+const windowWidth = Dimensions.get('window').width;
 
 export default function Camera({ navigation }) {
-  const [facing, setFacing] = useState('back');
+  const [facing, setFacing] = useState('front');
   const [pictureData, setPictureData] = useState();
   const [permission, requestPermission] = useCameraPermissions();
+  const [showCamera, setShowCamera] = useState(false);
   const cameraRef = useRef(undefined);
 
   if (!permission) {
@@ -33,23 +41,41 @@ export default function Camera({ navigation }) {
         style={styles.camera} 
         facing={facing}
         ref={cameraRef}
+        base64={true}
+        onCameraReady={() => setShowCamera(true)}
       >
-        <TouchableOpacity onPress={() => navigation.navigate('Explore Fashion')}>
-          <Text>Go Back</Text>
-        </TouchableOpacity>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <Text style={styles.text}>Flip Camera</Text>
+          <MaterialIcons style={{ marginLeft: 10 }} name="photo-library" size={50} color="white" />
+          <TouchableOpacity onPress={() => toggleCameraFacing()}>
+            <MaterialCommunityIcons style={{ marginRight: 10 }} name="camera-flip-outline" size={50} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.capture}
-            onPress={async () => {
-              const photo = await cameraRef.current?.takePictureAsync();
-              navigation.navigate('View Photo',{ photo: photo})
-            }}
-          />
         </View>
       </CameraView>
+      <View style={{position: 'absolute', left: 0, right: 0, bottom: 40, justifyContent: 'center', alignItems: 'center'}}>
+        <TouchableOpacity
+          style={styles.capture}
+          onPress={async () => {
+            const photo = await cameraRef.current?.takePictureAsync();
+            const manipulatedImage = await ImageManipulator.manipulateAsync(
+              photo.uri,
+              [],
+              { base64: true }
+            )
+            const aspectRatio = photo.width / photo.height;
+            const maxWidth = windowWidth - 120;
+            const maxHeight = maxWidth / aspectRatio;
+            console.log(manipulatedImage)
+            navigation.navigate('View Photo',{ photo: photo, maxWidth: maxWidth, maxHeight: maxHeight})
+          }}
+        />
+      </View>
+      <TouchableOpacity   
+        style={styles.backButton}
+        onPress={() => navigation.navigate('Explore Fashion')}
+      >
+        <Ionicons name="chevron-back" size={24} color="black" />
+        <Text>Back</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -57,30 +83,39 @@ export default function Camera({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: 'center',
+    justifyContent: 'center',
   },
   camera: {
     flex: 1,
-    justifyContent: 'center',
   },
   buttonContainer: {
-    flex: 1,
+    position: 'absolute',
+    alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'between',
-    alignItems: 'flex-end',
+    justifyContent: 'space-between',
     backgroundColor: 'transparent',
-    margin: 40,
-    borderWidth: 1,
+    padding: 4,
+    bottom: 40,
+    left: 0,
+    right: 0,
   },
   capture: {
     backgroundColor: 'white',
     width: 85,
     height: 85,
-    borderRadius: 50
+    borderRadius: 50,
   },  
   text: {
     fontSize: 24,
     fontWeight: 'bold',
     color: 'white',
   },
+  backButton: {
+    flex: 1, 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    position: 'absolute', 
+    left: 10, 
+    top: 60,
+  }
 });

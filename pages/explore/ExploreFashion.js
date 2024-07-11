@@ -1,12 +1,29 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 const ExploreFashion = ({ navigation }) => {
 
   return (
     <View styles={styles.container} >
       <View style={styles.contentContainer} >
+        <View 
+          style={{
+            flex: 0.3,
+            alignItems: 'flex-start',
+            width: '100%',
+          }}
+        >
+          <AntDesign
+            name="back" 
+            size={28} 
+            color="black"
+            style={{ marginLeft: 20 }}
+            // Once we get a homepage, this'll navigate back to the homepage instead
+            onPress={() => navigation.navigate('Login')}
+          />
+        </View>
         <Text style={styles.header}>Ready to try on some new styles?</Text>
         <Text style={styles.text} >Take a photo or upload an image of yourself to get started!</Text>
         <TouchableOpacity 
@@ -19,6 +36,7 @@ const ExploreFashion = ({ navigation }) => {
         <TouchableOpacity style={[ styles.button, { backgroundColor: '#e6e6e6'}]} >
           <Text style={{ color: 'black', fontSize: 16 }}>Upload an Image</Text>
         </TouchableOpacity>
+        <View style={{ flex: 0.3 }} />
       </View>
     </View>
   )
@@ -27,11 +45,8 @@ const ExploreFashion = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
-    borderWidth: 1,
   },
   contentContainer: {
     width: '100%',
