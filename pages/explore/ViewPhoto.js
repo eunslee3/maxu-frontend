@@ -1,10 +1,9 @@
 import React from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import AntDesign from '@expo/vector-icons/AntDesign';
-
 const ViewPhoto = ({ route, navigation }) => {
 
+  // TODO: Make the API call to stability.ai for image-to-image generation
 
   return (
     <View style={styles.container}>
@@ -27,9 +26,9 @@ const ViewPhoto = ({ route, navigation }) => {
       <View style={styles.buttonContainer}>
         <TouchableOpacity 
           style={[styles.button, { marginRight: 4, backgroundColor: '#e6e6e6' }]}
-          onPress={() => navigation.navigate('Camera')}
+          onPress={() => navigation.navigate('Explore Fashion')}
         >
-          <Text>Retake Photo</Text>
+          <Text>Go Back</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[styles.button, { marginLeft: 4, backgroundColor: '#4caf50' }]}>
           <Text style={{ color: 'white' }}>Generate!</Text>

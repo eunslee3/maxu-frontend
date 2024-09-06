@@ -11,9 +11,7 @@ const windowWidth = Dimensions.get('window').width;
 
 export default function Camera({ navigation }) {
   const [facing, setFacing] = useState('front');
-  const [pictureData, setPictureData] = useState();
   const [permission, requestPermission] = useCameraPermissions();
-  const [showCamera, setShowCamera] = useState(false);
   const cameraRef = useRef(undefined);
 
   if (!permission) {
@@ -35,43 +33,63 @@ export default function Camera({ navigation }) {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
 
+  const handleUploadCameraPhoto = async () => {
+    const photo = await cameraRef.current?.takePictureAsync();
+    const manipulatedImage = await ImageManipulator.manipulateAsync(
+      photo.uri,
+      [],
+      { base64: true }
+    )
+    const aspectRatio = photo.width / photo.height;
+    const maxWidth = windowWidth - 120;
+    const maxHeight = maxWidth / aspectRatio;
+    console.log(manipulatedImage)
+    navigation.navigate('View Photo',{ photo: photo, maxWidth: maxWidth, maxHeight: maxHeight})
+  }
+
   return (
     <View style={styles.container}>
-      <CameraView 
-        style={styles.camera} 
+      <CameraView
+        style={styles.camera}
         facing={facing}
         ref={cameraRef}
         base64={true}
-        onCameraReady={() => setShowCamera(true)}
       >
         <View style={styles.buttonContainer}>
-          <MaterialIcons style={{ marginLeft: 10 }} name="photo-library" size={50} color="white" />
+          <MaterialIcons
+            style={{ marginLeft: 10 }}
+            name="photo-library"
+            size={50}
+            color="white"
+          />
           <TouchableOpacity onPress={() => toggleCameraFacing()}>
-            <MaterialCommunityIcons style={{ marginRight: 10 }} name="camera-flip-outline" size={50} color="white" />
+            <MaterialCommunityIcons
+              style={{ marginRight: 10 }}
+              name="camera-flip-outline"
+              size={50}
+              color="white"
+            />
           </TouchableOpacity>
         </View>
       </CameraView>
-      <View style={{position: 'absolute', left: 0, right: 0, bottom: 40, justifyContent: 'center', alignItems: 'center'}}>
+      <View
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 40,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <TouchableOpacity
           style={styles.capture}
-          onPress={async () => {
-            const photo = await cameraRef.current?.takePictureAsync();
-            const manipulatedImage = await ImageManipulator.manipulateAsync(
-              photo.uri,
-              [],
-              { base64: true }
-            )
-            const aspectRatio = photo.width / photo.height;
-            const maxWidth = windowWidth - 120;
-            const maxHeight = maxWidth / aspectRatio;
-            console.log(manipulatedImage)
-            navigation.navigate('View Photo',{ photo: photo, maxWidth: maxWidth, maxHeight: maxHeight})
-          }}
+          onPress={handleUploadCameraPhoto}
         />
       </View>
-      <TouchableOpacity   
+      <TouchableOpacity
         style={styles.backButton}
-        onPress={() => navigation.navigate('Explore Fashion')}
+        onPress={() => navigation.navigate("Explore Fashion")}
       >
         <Ionicons name="chevron-back" size={24} color="black" />
         <Text>Back</Text>
